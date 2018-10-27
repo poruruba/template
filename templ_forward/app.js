@@ -44,7 +44,7 @@ app.post(path_post, (req, res) => {
 });
 
 app.get(path_get, (req, res) =>{
-    console.log(req);
+//    console.log(req);
     var proxy_path = proxy_url + req.path;
     console.log('proxy_path ' + proxy_path);
 
