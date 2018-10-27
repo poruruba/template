@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+  version: 'first version'
+  title: Sample Api
+host: localhost:10011
+basePath: /
+
+schemes:
+  - http
+  - https
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+  tokenAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw
+
+  /test_post:
+    post:
+      x-swagger-router-controller: echo
+      operationId: test_post
+      parameters:
+        - in: body
+          name: body
+          schema:
+            type: object
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+  /test_get:
+    get:
+      x-swagger-router-controller: echo
+      operationId: test_get
+      parameters:
+        - in: query
+          name: param
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"
