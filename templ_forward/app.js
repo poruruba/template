@@ -33,14 +33,18 @@ app.post(path_post, (req, res) => {
         headers['Authorization'] = req.headers['authorization'];
     if( req.headers['user-agent'] !== undefined )
         headers['User-Agent'] = req.headers['user-agent'];
-    return request({
-        url: proxy_path,
-        qs: req.query,
-        method: req.method,
-        headers: headers,
-        json: true,
-        body: req.body
-    }).pipe(res);
+    try{
+        return request({
+            url: proxy_path,
+            qs: req.query,
+            method: req.method,
+            headers: headers,
+            json: true,
+            body: req.body
+        }).pipe(res);
+    }catch(error){
+        console.log(error);
+    }
 });
 
 app.get(path_get, (req, res) =>{
@@ -55,14 +59,18 @@ app.get(path_get, (req, res) =>{
         headers['Authorization'] = req.headers['authorization'];
     if( req.headers['user-agent'] !== undefined )
         headers['User-Agent'] = req.headers['user-agent'];
-    return request({
-        url: proxy_path,
-        qs: req.query,
-        method: req.method,
-        headers: headers,
-        json: true,
-        body: req.body
-    }).pipe(res);
+    try{
+        return request({
+            url: proxy_path,
+            qs: req.query,
+            method: req.method,
+            headers: headers,
+            json: true,
+            body: req.body
+        }).pipe(res);
+    }catch(error){
+        console.log(error);
+    }
 });
 
 if (module === require.main) {
