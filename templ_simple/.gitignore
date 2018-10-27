@@ -40,3 +40,4 @@ config/runtime.yaml
 /.vscode/
 
 package-lock.json
+.env
