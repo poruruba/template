@@ -55,6 +55,20 @@ config.swaggerSecurityHandlers = {
     }catch(error){
       cb(error);
     }
+  },
+  jwtAuth: function (req, authOrSecDef, scopesOrApiKey, cb) {
+    try{
+      var decoded = jwt_decode(req.headers.authorization);
+      req.requestContext = {
+        authorizer : {
+          claims : decoded
+        }
+      };
+
+      cb();
+    }catch(error){
+      cb(error);
+    }
   }
 };
 
