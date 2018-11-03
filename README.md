@@ -18,4 +18,4 @@
 ■templ_forward
 
 * RESTful呼び出しの転送
-* GCP呼び出しの転送
+* GCP Endpoint呼び出しの転送
