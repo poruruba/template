@@ -13,9 +13,9 @@
 * 仮想API Gateway＋Lambda
 * 仮想Lambda
 * 仮想Alexa
-* 仮想GCPエンドポイント
 * 静的HTTP/HTTPSサーバ
 
 ■templ_forward
 
 * RESTful呼び出しの転送
+* GCP呼び出しの転送
