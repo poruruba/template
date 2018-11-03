@@ -10,11 +10,12 @@
 * Bootstrap v3.3.7
 * Vue
 * SwaggerによるRESTfulサーバ
+* 仮想API Gateway＋Lambda
 * 仮想Lambda
 * 仮想Alexa
+* 仮想GCPエンドポイント
 * 静的HTTP/HTTPSサーバ
 
 ■templ_forward
 
 * RESTful呼び出しの転送
-* 仮想GCPエンドポイント
