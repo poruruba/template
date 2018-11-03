@@ -3,9 +3,13 @@
 /* 関数を以下に追加する */
 const func_table = {
 //  "test-func" : require('./test_func').handler,
+//  "test-dialogflow" : require('./test_dialogflow').fulfillment,
 };
 const alexa_table = {
-//  "test-alexa" : require('./test_alexa').handler,
+  //  "test-alexa" : require('./test_alexa').handler,
+};
+const lambda_table = {
+//  "test-lambda" : require('./test_lambda').handler,
 };
 /* ここまで */
 
@@ -20,6 +24,9 @@ for( var operationId in func_table ){
   exports_list[operationId] = routing;
 }
 for( var operationId in alexa_table ){
+  exports_list[operationId] = routing;
+}
+for( var operationId in lambda_table ){
   exports_list[operationId] = routing;
 }
 
@@ -54,14 +61,15 @@ function routing(req, res) {
       func = func_table[operationId];
       res.func_type = "normal";
     }else if( alexa_table.hasOwnProperty(operationId) ){
-      event = {
-        session : req.body.session,
-        request: req.body.request,
-        context: req.body.context
-      }
+      event = req.body;
 
       func = alexa_table[operationId];
       res.func_type = "alexa";
+    }else if( lambda_table.hasOwnProperty(operationId) ){
+      event = req.body.event;
+
+      func = lambda_table[operationId];
+      res.func_type = "lambda";
     }else{
       console.log('can not found operationId: ' + operationId);
       return_error(res, new Error('can not found operationId'));
@@ -126,8 +134,8 @@ function return_response(res, ret){
     var bin = new Buffer(ret.body, 'base64')
     res.send(bin);
   }else{
-    if( res.func_type == 'alexa'){
-      res.send(ret);
+    if( res.func_type == 'alexa' || res.func_type == 'lambda'){
+      res.send(JSON.stringify(ret));
     }else{
       if( ret.body )
         res.send(ret.body);
