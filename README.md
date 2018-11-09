@@ -19,3 +19,7 @@
 
 * RESTful呼び出しの転送
 * GCP Endpoint呼び出しの転送
+
+■openid_server
+
+* なんちゃってOpenID Connectサーバ
