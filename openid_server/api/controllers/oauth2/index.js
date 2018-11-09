@@ -125,7 +125,7 @@ exports.handler = (event, context, callback) => {
         var response = new Response();
         response.set_body(jwkjson);
         callback(null, response);
-    }else if( event.path = '/oauth2/.well-known/openid-configuration' ){
+    }else if( event.path == '/oauth2/.well-known/openid-configuration' ){
         var configjson = {
             authorization_endpoint: base_url + "/oauth2/authorize",
             id_token_signing_alg_values_supported: [
