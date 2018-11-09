@@ -1,0 +1,146 @@
+swagger: '2.0'
+info:
+  version: 'first version'
+  title: OpenID Connect Server
+host: localhost:10011
+basePath: /
+
+schemes:
+  - http
+  - https
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+  tokenAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  /swagger:
+    x-swagger-pipe: swagger_raw
+
+  /oauth2/.well-known/openid-configuration:
+    get:
+      x-swagger-router-controller: routing
+      operationId: oauth2_openid_config
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+  /oauth2/.well-known/jwks.json:
+    get:
+      x-swagger-router-controller: routing
+      operationId: oauth2_jwks_json
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+  /oauth2/authorize_process:
+    get:
+      x-swagger-router-controller: routing
+      operationId: oauth2_authorize_process
+      parameters:
+        - in: query
+          name: client_id
+          required: true
+          type: string
+        - in: query
+          name: userid
+          required: true
+          type: string
+        - in: query
+          name: password
+          required: true
+          type: string
+        - in: query
+          name: redirect_uri
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+  /oauth2/authorize:
+    get:
+      x-swagger-router-controller: routing
+      operationId: oauth2_authorize
+      parameters:
+        - in: query
+          name: response_type
+          required: true
+          type: string
+        - in: query
+          name: client_id
+          required: true
+          type: string
+        - in: query
+          name: redirect_uri
+          required: true
+          type: string
+        - in: query
+          name: scope
+          type: string
+        - in: query
+          name: state
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+  /oauth2/token:
+    post:
+      x-swagger-router-controller: routing
+      operationId: oauth2_token
+      security:
+        - basicAuth: []
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - in: body
+          name: Oauth2TokenRequest
+          required: true
+          schema:
+            $ref: '#/definitions/Oauth2TokenRequest'
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+
+definitions:
+  Empty:
+    type: "object"
+    title: "Empty Schema"
+
+  Oauth2TokenRequest:
+    type: object
+    required:
+    - grant_type
+    properties:
+      grant_type:
+        type: string
+      client_id:
+        type: string
+      code:
+        type: string
+      scope:
+        type: string
+      redirect_uri:
+        type: string
+      refresh_token:
+        type: string
