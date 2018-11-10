@@ -19,7 +19,6 @@
 
   <title>サインイン</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
   <script src="https://unpkg.com/vue"></script>
 </head>
 <body>
@@ -37,6 +36,7 @@
             <input type="hidden" name="response_type" v-model="response_type">
             <input type="hidden" name="scope" v-model="scope">
             <input type="hidden" name="state" v-model="state">
+            <br>
             <button type="submit" class="btn btn-default">サインイン</button> 
         </form>
     </div>

@@ -35,6 +35,7 @@ config/runtime.yaml
 
 # certificate
 /cert/
+/api/controllers/oauth2/jwks/
 
 # visual studio code
 /.vscode/

@@ -12,6 +12,25 @@ const base_url = process.env.BASE_URL || 'https://test.sample.com';
 const keyid = process.env.KEYID || 'testkeyid';
 const issuer = process.env.ISSUER || 'testissuer';
 
+function make_access_token(client_id, scope){
+    var access_token = jwt.sign({token_use: 'access', scope: scope }, priv_pem, {
+        algorithm: 'RS256',
+        expiresIn: 60 * 60,
+        issuer: issuer,
+        subject: client_id,
+        keyid: keyid
+//                "cognito:username": userid,
+//                client_id: client_id
+    });
+
+    var tokens = {
+        "access_token" : access_token,
+        "token_type" : "Bearer",
+        "expires_in" : 3600
+    };
+    return tokens;
+}
+
 function make_tokens(client_id, userid, scope, refresh = true){
     var id_token = jwt.sign({token_use: 'id'}, priv_pem, {
         algorithm: 'RS256',
@@ -77,6 +96,15 @@ exports.handler = (event, context, callback) => {
             var response = new Response();
             response.set_body(tokens);
             callback(null, response);
+        }else if( grant_type == 'client_credentials'){
+            var scope = body.scope;
+            var client_id =body.client_id;
+
+            var tokens = make_access_token(client_id, scope);
+
+            var response = new Response();
+            response.set_body(tokens);
+            callback(null, response);
         }
     }else if( event.path == '/oauth2/authorize_process' ){
         var client_id = event.queryStringParameters.client_id;
@@ -90,7 +118,10 @@ exports.handler = (event, context, callback) => {
             var tokens = make_tokens(client_id, userid, scope);
 
             var response = new Response();
-            response.set_body(tokens);
+            response.statusCode = 301;
+            response.headers.Location = redirect_uri + '#id_token=' + tokens.id_token + '&access_token=' + tokens.access_token + '&refresh_token=' + tokens.refresh_token 
+                                        + '&token_type=' + tokens.token_type + '&expires_in=' + tokens.expires_in + '&state=' + state;
+            response.set_body(null);
             callback(null, response);
         }else if( response_type == 'code' ){
             var code = new Buffer(client_id + ':' + userid + ':' + scope).toString('base64');
