@@ -78,6 +78,28 @@ function make_tokens(client_id, userid, scope, refresh = true){
 exports.handler = (event, context, callback) => {
     if( event.path == '/oauth2/token'){
         var body = JSON.parse(event.body);
+        
+        if( process.env.CLIENT_ID ){
+            var client_id = body.client_id;
+            if( process.env.CLIENT_ID != password ){
+                var response = new Response();
+                response.statusCode = 401;
+                response.set_error('client_id mismatch');
+                callback(null, response);
+                return;
+            }
+        }
+        if( process.env.CLIENT_SECRET ){
+            var client_secret = body.client_secret;
+            if( process.env.CLIENT_SECRET != client_secret ){
+                var response = new Response();
+                response.statusCode = 401;
+                response.set_error('client_secret mismatch');
+                callback(null, response);
+                return;
+            }
+        }
+        
         var grant_type = body.grant_type;
         if( grant_type == 'authorization_code' || grant_type == "refresh_token"){
             var code;
@@ -109,11 +131,31 @@ exports.handler = (event, context, callback) => {
     }else if( event.path == '/oauth2/authorize_process' ){
         var client_id = event.queryStringParameters.client_id;
         var userid = event.queryStringParameters.userid;
+        var password = event.queryStringParameters.password;
         var redirect_uri = event.queryStringParameters.redirect_uri;
         var response_type = event.queryStringParameters.response_type;
         var scope = event.queryStringParameters.scope;
         var state = event.queryStringParameters.state;
 
+        if( process.env.USERID ){
+            if( process.env.USERID != userid ){
+                var response = new Response();
+                response.statusCode = 401;
+                response.set_error('userid mismatch');
+                callback(null, response);
+                return;
+            }
+        }
+        if( process.env.PASSWORD ){
+            if( process.env.PASSWORD != password ){
+                var response = new Response();
+                response.statusCode = 401;
+                response.set_error('password mismatch');
+                callback(null, response);
+                return;
+            }
+        }
+        
         if( response_type == 'token'){
             var tokens = make_tokens(client_id, userid, scope);
 
