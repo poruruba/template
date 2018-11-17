@@ -5,7 +5,7 @@ AWS.config.update({region: 'ap-northeast-1'});
 
 const Adapter = require('ask-sdk-dynamodb-persistence-adapter');
 
-class AskUtils{
+class AlexaUtils{
     constructor(alexa, tableName = 'AskPersistentAttributes'){
         this.alexa = alexa;
         this.skillBuilder = alexa.SkillBuilders.custom();
@@ -113,4 +113,4 @@ const ErrorHandler = {
     },
 };
 
-module.exports = AskUtils;
+module.exports = AlexaUtils;
