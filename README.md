@@ -13,12 +13,18 @@
 * 仮想API Gateway＋Lambda
 * 仮想Lambda
 * 仮想Alexa
+* 仮想Clova
+* 仮想GoogleHome
 * 静的HTTP/HTTPSサーバ
 
-■templ_forward
+■forward_express
 
-* RESTful呼び出しの転送
+* ExpressのRESTful呼び出しの転送
 * GCP Endpoint呼び出しの転送
+
+■forward_lambda
+
+* Lambda呼び出しの転送
 
 ■openid_server
 
