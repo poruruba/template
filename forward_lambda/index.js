@@ -3,18 +3,16 @@ const request = require('request');
 exports.handler = (event, context, callback) =>{
     console.log(event);
     console.log(context);
-
-    var postDataStr = JSON.stringify({
-        event: event,
-        context: context
-    });
     
     var options = {
         url: process.env.FORWARD_URL,
         method: 'POST',
         headers: { 'Content-Type':'application/json' },
-        json: JSON.parse(postDataStr)
-    }
+        json: {
+            event: event,
+            context: context
+        }
+    };
 
     return request(options, function (error, response, body) {
         if( error ){
