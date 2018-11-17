@@ -6,7 +6,7 @@ const func_table = {
 //  "test-dialogflow" : require('./test_dialogflow').fulfillment,
 };
 const alexa_table = {
-  //  "test-alexa" : require('./test_alexa').handler,
+  //  "test-alexa" : require('./test_alexa_skill').handler,
 };
 const lambda_table = {
 //  "test-lambda" : require('./test_lambda').handler,
