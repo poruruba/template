@@ -2,14 +2,14 @@
 
 /* 関数を以下に追加する */
 const func_table = {
-//  "test-func" : require('./test_func').handler,
-//  "test-dialogflow" : require('./test_dialogflow').fulfillment,
+//  "test-func" : require('./test-func').handler,
+//  "test-dialogflow" : require('./test-dialogflow').fulfillment,
 };
 const alexa_table = {
-  //  "test-alexa" : require('./test_alexa_skill').handler,
+  //  "test-alexa" : require('./test-alexa-skill').handler,
 };
 const lambda_table = {
-//  "test-lambda" : require('./test_lambda').handler,
+//  "test-lambda" : require('./test-lambda').handler,
 };
 /* ここまで */
 
