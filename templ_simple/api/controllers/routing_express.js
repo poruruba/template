@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-//    test: require('./test_clova_skill').handler,
+//    test: require('./test-clova-skill').handler,
 };
  
