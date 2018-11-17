@@ -1,6 +1,4 @@
-const https = require('https');
-const http = require('http');
-const url = require('url');
+const request = require('request');
 
 exports.handler = (event, context, callback) =>{
     console.log(event);
@@ -11,43 +9,19 @@ exports.handler = (event, context, callback) =>{
         context: context
     });
     
-    var url_params = url.parse(process.env.FORWARD_URL);
-    const options = {
-        hostname: url_params.hostname,
+    var options = {
+        url: process.env.FORWARD_URL,
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': postDataStr.length
-        }
-    };
-    if( url_params.port )
-        options.port = url_params.port;
-    if( url_params.path )
-        options.path = url_params.path;
-    console.log(options);
-    
-    try{
-        var http_request;
-        if( url_params.protocol == 'https:')
-            http_request = https;
-        else
-            http_request = http;
-
-        const req = http_request.request(options, (res) => {
-            res.setEncoding('utf8');
-            res.on('data', (d) => {
-                callback(null, JSON.parse(d));
-            });
-        });
-        
-        req.on('error', (e) => {
-            console.error(e);
-            callback(e);
-        });
-        
-        req.write(postDataStr);
-        req.end();
-    }catch(error){
-        callback(error);
+        headers: { 'Content-Type':'application/json' },
+        json: JSON.parse(postDataStr)
     }
+
+    return request(options, function (error, response, body) {
+        if( error ){
+            callback(error);
+            return;
+        }
+
+        callback(null, JSON.parse(body));
+    });
 };
