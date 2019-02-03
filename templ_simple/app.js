@@ -11,6 +11,14 @@ var cors = require('cors');
 app.use(cors());
 require('dotenv').config();
 
+var session = require('express-session');
+app.use(session({
+    secret: "secret key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true }
+}));
+
 var config = {
   appRoot: __dirname // required config
 };
@@ -29,10 +37,13 @@ config.swaggerSecurityHandlers = {
         var ascii = buf.toString('ascii');
 
         req.requestContext = {
-          authorizer : {
+          basic : {
             basic : ascii.split(':')
           }
         };
+      }else{
+        cb(new Error("Authorization not defined"));
+        return;
       }
 
       cb();
@@ -49,6 +60,9 @@ config.swaggerSecurityHandlers = {
             claims : decoded
           }
         };
+      }else{
+        cb(new Error("Authorization not defined") );
+        return;
       }
 
       cb();
@@ -58,12 +72,36 @@ config.swaggerSecurityHandlers = {
   },
   jwtAuth: function (req, authOrSecDef, scopesOrApiKey, cb) {
     try{
-      var decoded = jwt_decode(req.headers.authorization);
-      req.requestContext = {
-        authorizer : {
-          claims : decoded
-        }
-      };
+      if( req.headers.authorization ){
+        var decoded = jwt_decode(req.headers.authorization);
+        req.requestContext = {
+          jwt : {
+            claims : decoded
+          }
+        };
+      }else{
+        cb(new Error("Authorization not defined") );
+        return;
+      }
+
+      cb();
+    }catch(error){
+      cb(error);
+    }
+  },
+  apikeyAuth: function (req, authOrSecDef, scopesOrApiKey, cb) {
+    try{
+      var apikey = req.headers['x-api-key'];
+      if( apikey ){
+        req.requestContext = {
+          apikey : {
+            apikey : apikey
+          }
+        };
+      }else{
+        cb(new Error("x-api-key not defined") );
+        return;
+      }
 
       cb();
     }catch(error){
