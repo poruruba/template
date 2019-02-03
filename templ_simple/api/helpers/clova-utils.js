@@ -11,18 +11,18 @@ class ClovaUtils{
         this.clovaSkillHandler
         .onLaunchRequest(async responseHelper => {
             if( this.launchHandle )
-                return this.launchHandle(responseHelper);
+                return await this.launchHandle(responseHelper);
         })
-        .onIntentRequest(responseHelper => {
+        .onIntentRequest(async responseHelper => {
             const intent = responseHelper.getIntentName();
 
             var handle = this.intentHandles.get(intent);
             if( handle )
-                return handle(responseHelper);
+                return await handle(responseHelper);
         })
-        .onSessionEndedRequest(responseHelper => {
+        .onSessionEndedRequest(async responseHelper => {
             if( this.sessionEndedHandle )
-                return this.sessionEndedHandle(responseHelper);
+                return await this.sessionEndedHandle(responseHelper);
         });
     }
 
