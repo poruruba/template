@@ -1,2 +1,0 @@
-var methods_sample = {
-};
