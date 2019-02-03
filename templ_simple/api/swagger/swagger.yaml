@@ -21,13 +21,17 @@ securityDefinitions:
     type: apiKey
     name: Authorization
     in: header
+  apikeyAuth:
+    type: apiKey
+    name: X-API-KEY
+    in: header
 #  jwtAuth:
 #    authorizationUrl: ""
 #    flow: "implicit"
 #    type: "oauth2"
-#    x-google-issuer: "https://cognito-idp.ap-northeast-1.amazonaws.com/yCognito‚Ìƒv[ƒ‹IDz"
-#    x-google-jwks_uri: "https://cognito-idp.ap-northeast-1.amazonaws.com/yCognito‚Ìƒv[ƒ‹IDz/.well-known/jwks.json"
-#    x-google-audiences: "yCognito‚ÌƒAƒvƒŠƒNƒ‰ƒCƒAƒ“ƒgIDz"
+#    x-google-issuer: "https://cognito-idp.ap-northeast-1.amazonaws.com/ã€Cognitoã®ãƒ—ãƒ¼ãƒ«IDã€‘"
+#    x-google-jwks_uri: "https://cognito-idp.ap-northeast-1.amazonaws.com/ã€Cognitoã®ãƒ—ãƒ¼ãƒ«IDã€‘/.well-known/jwks.json"
+#    x-google-audiences: "ã€Cognitoã®ã‚¢ãƒ—ãƒªã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆIDã€‘"
 
 paths:
   /swagger:
@@ -41,12 +45,12 @@ paths:
         - in: body
           name: body
           schema:
-            type: object
+            $ref: "#/definitions/CommonRequest"
       responses:
         200:
           description: Success
           schema:
-            type: object
+            $ref: "#/definitions/CommonResponse"
 
   /test_get:
     get:
@@ -60,9 +64,14 @@ paths:
         200:
           description: Success
           schema:
-            type: object
+            $ref: "#/definitions/CommonResponse"
 
 definitions:
   Empty:
     type: "object"
     title: "Empty Schema"
+    
+  CommonRequest:
+    type: object
+  CommonResponse:
+    type: object
