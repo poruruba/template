@@ -94,7 +94,7 @@ class BaseIntentHandler{
 
     handle(handlerInput) {
         console.log('handle: ' + this.matcher + ' called');
-        return this.myhandle(handlerInput);
+        return await this.myhandle(handlerInput);
     }
 }
   
